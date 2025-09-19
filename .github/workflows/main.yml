@@ -1,7 +1,7 @@
                                                                                                                                                                                                                                                                                               else
                                                                                                                                                                                                                                                                                                           echo "❌ Erro na execução do workflow"
-                                                                                                                                                                                                                                                                                                                      echo "$response"
-                                                                                                                                                                                                                                                                                                                                  exit 1
+                                                                                                                                                                                                                                                                                                               echo "$response"
+                                                                                                                                                                                                                                                                                                               exit 1
 name: Composio Meta Ads to Google Sheets Sync
 
 on:
