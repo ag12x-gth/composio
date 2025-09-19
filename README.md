@@ -22,7 +22,8 @@ cp .env.example .env
 
 ### 2. Configure as Variáveis de Ambiente
 
-Edite o arquivo `.env`:
+
+<!-- Trigger workflow execution -->Edite o arquivo `.env`:
 ```bash
 COMPOSIO_TOKEN=your_composio_token_here
 SPREADSHEET_ID=your_spreadsheet_id_here
