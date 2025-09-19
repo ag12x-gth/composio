@@ -14,8 +14,17 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
       
-          "https://api.composio.dev/v1/workflows/$COMPOSIO_WORKFLOW_ID/execute" \
-          -H "Authorization: Bearer $COMPOSIO_API_KEY" \
+name: Composio Meta Ads to Google Sheets Sync
+
+on:
+  schedule:
+    # Executa a cada 2 minutos
+    - cron: '*/2 * * * *'
+  workflow_dispatch: # Permite execução manual
+
+jobs:
+  sync-meta-ads:
+    runs-on: ubuntu-latest          -H "Authorization: Bearer $COMPOSIO_API_KEY" \
           -H "Content-Type: application/json" \
           -d '{
             "input": {
