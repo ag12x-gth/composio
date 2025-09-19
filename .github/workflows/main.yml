@@ -2,14 +2,12 @@ name: Composio Meta Ads to Google Sheets Sync
 
 on:
   schedule:
-    # Executa a cada 2 minutos
     - cron: '*/2 * * * *'
-  workflow_dispatch: # Permite execução manual
+  workflow_dispatch:
 
 jobs:
   sync-meta-ads:
     runs-on: ubuntu-latest
-    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -24,7 +22,4 @@ jobs:
                 "trigger_type": "github_actions_scheduled"
               }
             }')
-          
           echo "Resposta da API Composio: $response"
-          
-          # Verifica se a execução foi bem-sucedida
