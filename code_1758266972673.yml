@@ -1,0 +1,53 @@
+name: Automação Meta Ads para Google Sheets
+
+on:
+  schedule:
+    # Executa a cada 2 minutos
+    - cron: '*/2 * * * *'
+  workflow_dispatch: # Permite execução manual
+
+env:
+  PYTHON_VERSION: '3.9'
+
+jobs:
+  run-meta-ads-automation:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout do repositório
+      uses: actions/checkout@v4
+      
+    - name: Configurar Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Cache das dependências Python
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+          
+    - name: Instalar dependências
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Executar automação Meta Ads
+      env:
+        COMPOSIO_TOKEN: ${{ secrets.COMPOSIO_TOKEN }}
+        SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+      run: |
+        python run_composio.py
+        
+    - name: Upload dos logs (em caso de erro)
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: error-logs
+        path: |
+          *.log
+          error_*.txt
+        retention-days: 7
