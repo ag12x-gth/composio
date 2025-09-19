@@ -4,58 +4,27 @@ on:
   schedule:
     # Executa a cada 2 minutos
     - cron: '*/2 * * * *'
-  workflow_dispatch:  # Permite execução manual
+  workflow_dispatch: # Permite execução manual
 
 jobs:
   sync-meta-ads:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
       
-name: Composio Meta Ads to Google Sheets Sync
-
-on:
-  schedule:
-    # Executa a cada 2 minutos
-    - cron: '*/2 * * * *'
-  workflow_dispatch: # Permite execução manual
-
-jobs:
-  sync-meta-ads:
-    runs-on: ubuntu-latest          -H "Authorization: Bearer $COMPOSIO_API_KEY" \
-          -H "Content-Type: application/json" \
-          -d '{
-            "input": {
-              "trigger_type": "github_actions_scheduled"
-            }
-          }')
-        
-        echo "Resposta da API Composio: $response"
-        
-        # Verifica se a execução foi bem-sucedida
-        if echo "$response" | grep -q '"status":"success"'; then
-          echo "✅ Workflow executado com sucesso!"
-        else
-          echo "❌ Erro na execução do workflow"
-          echo "$response"
-          exit 1
-        fi
-        
-    - name: Log execution
-      run: |
-        echo "Execução concluída em: $(date)"
-        echo "Próxima execução: em 2 minutos"      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        
-    - name: Call Composio Workflow
-      env:
-        COMPOSIO_API_KEY: ${{ secrets.COMPOSIO_API_KEY }}
-        COMPOSIO_WORKFLOW_ID: ${{ secrets.COMPOSIO_WORKFLOW_ID }}
-      run: |
-        echo "Iniciando sincronização Meta Ads -> Google Sheets"
-        
-        # Chama a API do Composio para executar o workflow
-        response=$(curl -X POST \
+      - name: Execute Composio Workflow
+        run: |
+          response=$(curl -X POST "https://backend.composio.dev/api/v1/connectedAccounts/connectedaccount_f7dfff82-df8f-48e7-9505-e956ee376552/execute" \
+            -H "Authorization: Bearer $COMPOSIO_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "input": {
+                "trigger_type": "github_actions_scheduled"
+              }
+            }')
+          
+          echo "Resposta da API Composio: $response"
+          
+          # Verifica se a execução foi bem-sucedida
